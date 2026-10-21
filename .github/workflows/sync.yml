@@ -29,6 +29,10 @@ jobs:
           git remote add upstream https://github.com/cmliu/edgetunnel.git
           git fetch upstream main
 
+          # 跳过 workflow 文件：把 .github/workflows/ 下被上游改动的文件
+          # 还原为本地版本，保证推送时不会触发 workflows 权限校验
+          git checkout HEAD -- .github/workflows/ || true
+
           if git diff --quiet HEAD upstream/main; then
             # 内容和上游一致，直接对齐，顺带清理历史分叉留下的多余 merge commit
             git reset --hard upstream/main
